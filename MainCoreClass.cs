@@ -18,6 +18,8 @@ namespace WebRemokon
 
         public List<AppData> AppList { get; set; }
 
+        private string nowWindow;
+
         public MainCoreClass()
         {
             server = new my_websocket(12255);
@@ -25,6 +27,14 @@ namespace WebRemokon
             AppList = new List<AppData>();
             server.NewClient += new_client;
             window.ChangeActiveWindow += changeWindow;
+
+            AppList.Add(new AppData
+            {
+                WindowName = "$default$",
+                url = "default.html"
+            });
+
+            nowWindow = "";
         }
 
         void new_client(object sender, EventArgs ev)
@@ -41,6 +51,7 @@ namespace WebRemokon
             if (ev is ReceiveEvent)
             {
                 string mes = (ev as ReceiveEvent).mes;
+                Console.WriteLine(mes);
                 SendKeys.SendWait(mes);
             }
         }
@@ -50,13 +61,31 @@ namespace WebRemokon
             if (e is ChangeActiveWindowsEvent)
             {
                 ChangeActiveWindowsEvent ev = e as ChangeActiveWindowsEvent;
+                bool isWindow = false;
 
                 AppList.ForEach(x => {
                     if (x.WindowName == ev.windowsname)
                     {
-                        server.all_send(x.url);
+                        if (nowWindow != x.WindowName)
+                        {
+                            server.all_send(x.url);
+                            isWindow = true;
+                            nowWindow = x.WindowName;
+                        }
                     }
                 });
+
+                if (isWindow == false && nowWindow != "default.html")
+                {
+                    AppList.ForEach(x =>
+                    {
+                        if (x.WindowName == "$default$")
+                        {
+                            server.all_send(x.url);
+                        }
+                        nowWindow = "default.html";
+                    });
+                }
             }
             else
             {

@@ -25,13 +25,6 @@ namespace WebRemokon
         {
             MainCore = new MainCoreClass();
             MainCore.window.ChangeActiveWindow += ChgWindows;
-
-            AppData ap = new AppData
-            {
-                url = "http://aaa.com",
-                WindowName = "firefox"
-            };
-            MainCore.AppList.Add(ap);
             InitializeComponent();
 
             //DataContext = MainCore;

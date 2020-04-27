@@ -48,6 +48,7 @@ namespace WebRemokon
                         chgEvent.windowsname = prosessname;
                         ChangeActiveWindow?.Invoke(this, chgEvent);
                         ActiveWindowName = prosessname;
+                        Console.WriteLine("Window:{0}", ActiveWindowName);
                     }
                     Thread.Sleep(100);
                     

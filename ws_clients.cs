@@ -94,9 +94,19 @@ namespace WebRemokon
             var buffer = Encoding.UTF8.GetBytes(mes);
             var segment = new ArraySegment<byte>(buffer);
 
-            //クライアント側に文字列を送信
-            await ws.SendAsync(segment, WebSocketMessageType.Text, true, CancellationToken.None);
-            Console.WriteLine("sendmessage:{0}", mes);
+            if (ws.State != WebSocketState.Closed || ws.State != WebSocketState.Aborted)
+            {
+                //クライアント側に文字列を送信
+                try
+                {
+                    await ws.SendAsync(segment, WebSocketMessageType.Text, true, CancellationToken.None);
+                    Console.WriteLine("sendmessage:{0}", mes);
+                }
+                catch (System.Net.WebSockets.WebSocketException)
+                {
+                    await this.Close();
+                }
+            }
         }
 
         public async Task Close()

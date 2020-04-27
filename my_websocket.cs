@@ -50,6 +50,12 @@ namespace WebRemokon
                 var new_arg = new NewClientArg();
                 new_arg.ws = myws;
                 NewClient?.Invoke(this, new_arg);
+
+                List<int> delWS = ws.Select((value, index) => new { x = value, i = index }).Where(y => (y.x.ws.State == WebSocketState.Closed)|| (y.x.ws.State == WebSocketState.Aborted)).Select(x=>x.i).ToList();
+                delWS.ForEach(x =>
+                {
+                    ws.RemoveAt(x);
+                });
             }
             else {
 
