@@ -56,6 +56,7 @@ namespace WebRemokon
             NewWindowTextBox.Text = "";
             JumpUrlTexBox.Text = "";
             WindowList.Items.Refresh();
+            MainCore.SaveConfig();
         }
     }
 }

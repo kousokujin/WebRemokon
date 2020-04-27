@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.InteropServices;
+using System.IO;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 
 namespace WebRemokon
 {
@@ -22,17 +19,24 @@ namespace WebRemokon
 
         public MainCoreClass()
         {
+            //Console.OutputEncoding = new UTF8Encoding();
+
             server = new my_websocket(12255);
             window = new AcrtiveWindow();
             AppList = new List<AppData>();
             server.NewClient += new_client;
             window.ChangeActiveWindow += changeWindow;
 
-            AppList.Add(new AppData
+            bool isConfig = LoadConfig();
+            if (isConfig == false)
             {
-                WindowName = "$default$",
-                url = "default.html"
-            });
+                AppList.Add(new AppData
+                {
+                    WindowName = "$default$",
+                    url = "default.html"
+                });
+                SaveConfig();
+            }
 
             nowWindow = "";
         }
@@ -93,7 +97,51 @@ namespace WebRemokon
             }
 
         }
-        
+        public void SaveConfig()
+        {
+            string formattedJson = JsonConvert.SerializeObject(AppList, Formatting.Indented);
+            Encoding enc = Encoding.GetEncoding("UTF-8");
+            StreamWriter writer = new StreamWriter(@"setting.json", false, enc);
+            Console.WriteLine(formattedJson);
+            writer.WriteLine(formattedJson);
+            writer.Close();
+        }
+
+        public bool LoadConfig()
+        {
+            if (File.Exists("setting.json"))
+            {
+
+                StreamReader sr = new StreamReader(@"setting.json", Encoding.GetEncoding("UTF-8"));
+                string str = sr.ReadToEnd();
+                sr.Close();
+                AppList = JsonConvert.DeserializeObject<List<AppData>>(str);
+
+                bool isDefault = false;
+                AppList.ForEach(x =>
+                {
+                    if (x.WindowName == "$default$")
+                    {
+                        isDefault = true;
+                    }
+                });
+
+                if (isDefault == false)
+                {
+                    AppList.Add(new AppData
+                    {
+                        WindowName = "$default$",
+                        url = "default.html"
+                    });
+
+                    SaveConfig();
+                }
+
+                return true;
+            }
+            return false;
+        }
+
     }
 
     class AppData
