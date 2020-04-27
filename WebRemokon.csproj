@@ -85,6 +85,7 @@
     </ApplicationDefinition>
     <Compile Include="AcrtiveWIndow.cs" />
     <Compile Include="MainCoreClass.cs" />
+    <Compile Include="VKeyCode.cs" />
     <Compile Include="ws_clients.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
