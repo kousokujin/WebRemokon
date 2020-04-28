@@ -23,6 +23,6 @@ WebSocketを使って通信しています。localhost:12255/pageにWebSocketで
 送る文字列はhttps://docs.microsoft.com/ja-jp/dotnet/api/system.windows.forms.sendkeys.send?view=netcore-3.1 を参考にしてください。
 
 # Lisense
-Copyright (c) 2019 kousokujin.
+Copyright (c) 2020 kousokujin.
 
 Released under the MIT license.

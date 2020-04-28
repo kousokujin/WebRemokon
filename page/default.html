@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>Webリモコン</title>
+
+    <script>
+        /*
+        ws://localhost:12255/ws/のところををws://192.168.x.x:12255/ws/に変えればスマホからもアクセスが可能。
+        ファイアーウォールを解除する
+        192.168.x.xはアプリケーションを実行しているIPアドレス
+        */
+        var sock = new WebSocket('ws://localhost:12255/ws/');
+
+        // 接続
+        sock.addEventListener('open',function(e){
+            console.log('Socket 接続成功');
+        });
+
+        // サーバーからデータを受け取る
+        sock.addEventListener('message',function(e){
+            console.log(e.data);
+            sock.close();
+            location.href = e.data;
+        });
+
+        function sendKey(key){
+            sock.send(key);
+        }
+
+        function sendTextBox(){
+             	
+            var text = document.getElementById('text').value;
+            sock.send(text);
+        }
+    </Script>
+
+    <style>
+        .container{
+            margin-left:100px;
+            margin-right:100px;
+        }
+        .buttonlink {
+            margin:3px;
+            padding:5px;
+            text-align: center;
+            background-color: rgb(72, 69, 224);
+            color:#FFF;
+            text-decoration: none;
+            border-radius: 5px;
+            
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>サンプルボタン</h2>
+        <p>送信できない場合はリロードしてください。</p>
+        <a href="#" class="buttonlink" onclick='sendKey("^c" ); '>コピー</a>
+        <a href="#" class="buttonlink" onclick='sendKey("^v" ); '>貼り付け</a>
+        <a href="#" class="buttonlink" onclick='sendkey("helloworld")';>helloworld</a>
+        <h2>任意のキー</h2>
+        <input type="text" name="sample_text" id="text">
+        <a href="#" class="buttonlink" onclick='sendTextBox();' >送信</a>
+        <p>送信するキーについては<a href="https://docs.microsoft.com/ja-jp/dotnet/api/system.windows.forms.sendkeys.send?view=netcore-3.1">こちら</a>を参照。</p>
+    </div>
+</body>
