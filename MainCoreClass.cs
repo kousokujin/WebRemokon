@@ -17,12 +17,26 @@ namespace WebRemokon
         public List<AppData> AppList { get; set; }
 
         private string nowWindow;
+        public bool isRun;
 
         public MainCoreClass()
         {
             //Console.OutputEncoding = new UTF8Encoding();
 
-            server = new my_websocket(12255);
+            try
+            {
+                server = new my_websocket(12255);
+            }
+            catch (System.Net.HttpListenerException)
+            {
+                MessageBox.Show("Webサーバを開始できまん。管理者権限で\n netsh http add urlacl url=http://+:12255/ user=Everyone を実行してください。",
+                "Webリモコン",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
+                isRun = false;
+                return;
+            }
+            isRun = true;
             window = new AcrtiveWindow();
             AppList = new List<AppData>();
             server.NewClient += new_client;

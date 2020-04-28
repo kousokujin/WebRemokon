@@ -15,8 +15,14 @@ namespace WebRemokon
         MainWindow wnd;
         public NotifyIconWrapper()
         {
-            InitializeComponent();
             MainCore = new MainCoreClass();
+
+            if(MainCore.isRun == false)
+            {
+                Application.Current.Shutdown();
+            }
+
+            InitializeComponent();
             this.DisplayShow.Click += this.DisPlayButton_Click;
             this.ExitButton.Click += this.ExitButton_Click;
         }
