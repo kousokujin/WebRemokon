@@ -55,7 +55,7 @@ namespace WebRemokon
                         byList.Add(data[0]);
                     }
                 }
-                pushKey(byList, 10);
+                pushKey(byList, 100);
             }
         }
     }

@@ -9,7 +9,7 @@ using System.Diagnostics;
 
 namespace WebRemokon
 {
-    class AcrtiveWindow
+    public class AcrtiveWindow
     {
         [DllImport("user32.dll")]
         public static extern IntPtr GetForegroundWindow();

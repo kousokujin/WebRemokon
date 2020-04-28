@@ -10,7 +10,7 @@ using System.IO;
 
 namespace WebRemokon
 {
-    class my_websocket
+    public class my_websocket
     {
         HttpListener listener;
         List<ws_clients> ws;

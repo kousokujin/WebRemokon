@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,9 +22,10 @@ namespace WebRemokon
     public partial class MainWindow : Window
     {
         MainCoreClass MainCore;
-        public MainWindow()
+        public MainWindow(MainCoreClass MainCore)
         {
-            MainCore = new MainCoreClass();
+            //MainCore = new MainCoreClass();
+            this.MainCore = MainCore;
             MainCore.window.ChangeActiveWindow += ChgWindows;
             InitializeComponent();
 
@@ -37,26 +39,97 @@ namespace WebRemokon
             if (e is ChangeActiveWindowsEvent)
             {
                 string windowname = (e as ChangeActiveWindowsEvent).windowsname;
-                this.Dispatcher.Invoke((Action)(() =>
+
+                if (windowname != "WebRemokon")
                 {
-                    ActiveWindowLabel.Content = windowname;
-                }));
+                    this.Dispatcher.Invoke((Action)(() =>
+                    {
+                        NewWindowTextBox.Text = windowname;
+                    }));
+                }
             }
         }
 
         private void AddAppButton_Click(object sender, RoutedEventArgs e)
         {
-            AppData d = new AppData
+            bool isExist = false;
+            MainCore.AppList.ForEach(x =>
             {
-                WindowName = NewWindowTextBox.Text,
-                url = JumpUrlTexBox.Text
-            };
+                if (x.WindowName == NewWindowTextBox.Text)
+                {
+                    isExist = true;
+                }
+            });
 
-            MainCore.AppList.Add(d);
+            if (isExist == false)
+            {
+                AppData d = new AppData
+                {
+                    WindowName = NewWindowTextBox.Text,
+                    url = JumpUrlTexBox.Text
+                };
+
+                MainCore.AppList.Add(d);
+            }
+            else
+            {
+                foreach(AppData x in MainCore.AppList)
+                {
+                    if(x.WindowName == NewWindowTextBox.Text)
+                    {
+                        x.url = JumpUrlTexBox.Text;
+                    }
+                }
+            }
             NewWindowTextBox.Text = "";
             JumpUrlTexBox.Text = "";
             WindowList.Items.Refresh();
             MainCore.SaveConfig();
         }
+
+        private void DelButton_Click(object sender, RoutedEventArgs e)
+        {
+            AppData name = ((sender as Button).Tag) as AppData;
+
+            /*
+            int i = 0;
+            int del_i = 0;
+            foreach(AppData d in MainCore.AppList)
+            {
+                if(d.WindowName == name.WindowName && d.url == name.url)
+                {
+                    del_i = i;
+                }
+                i++;
+            }
+            */
+            if (name.WindowName != "$default$")
+            {
+                MainCore.AppList.Remove(name);
+                WindowList.Items.Refresh();
+            }
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Visibility = Visibility.Hidden;
+        }
+
+        private void Window_Activated(object sender, EventArgs e)
+        {
+            WindowsBorder.BorderBrush = new SolidColorBrush(Color.FromArgb(255, 0, 122, 204));
+        }
+
+        private void Window_Deactivated(object sender, EventArgs e)
+        {
+            WindowsBorder.BorderBrush = new SolidColorBrush(Color.FromArgb(255, 161,161,161));
+        }
+
+        /*
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+
+        }
+        */
     }
 }

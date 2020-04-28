@@ -5,20 +5,45 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WebRemokon"
         mc:Ignorable="d"
-        Title="WebRemokon" Height="300" Width="403" ResizeMode="NoResize">
-    <Grid>
-        <DataGrid x:Name="WindowList" AutoGenerateColumns="False" ItemsSource="{Binding MainCore.AppList}" Height="112" Margin="12,55,0,0" VerticalAlignment="Top" Width="371" CanUserAddRows="false" HorizontalAlignment="Left" HeadersVisibility="Column">
+        Title="WebRemokon" Height="238.667" Width="403" ResizeMode="NoResize" WindowStyle="None" Background="#FF333333" Activated="Window_Activated" Deactivated="Window_Deactivated">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="MainWindowDic.xaml"/>
+                <ResourceDictionary Source="DefaultWindowTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="{x:Static SystemParameters.CaptionHeight}"
+                      ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}" />
+    </WindowChrome.WindowChrome>
+    <Border x:Name="WindowsBorder">
+        <Grid>
+            <StackPanel Orientation="Horizontal" Margin="5"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top">
+                <Button x:Name="CloseButton" Content="r" Style="{DynamicResource CaptionButtonStyleKey}" Click="CloseButton_Click" />
+            </StackPanel>
+            <Label Content="Webリモコン" HorizontalAlignment="Left" Margin="10,2,0,206" Width="182" />
+                <DataGrid x:Name="WindowList" AutoGenerateColumns="False" ItemsSource="{Binding MainCore.AppList}" Height="112" Margin="10,36,0,0" VerticalAlignment="Top" Width="381" CanUserAddRows="false" HorizontalAlignment="Left" HeadersVisibility="Column" IsReadOnly="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ウィンドウ名" Binding="{Binding WindowName}"/>
-                <DataGridTextColumn Header="移動URL" Binding="{Binding url}"/>
+                <DataGridTextColumn Header="ウィンドウ名" Binding="{Binding WindowName}" MinWidth="150"/>
+                <DataGridTextColumn Header="移動URL" Binding="{Binding url}" MinWidth="150"/>
+                <DataGridTemplateColumn Header="削除" MinWidth="40" CanUserResize="False">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button x:Name="DelButton" Content="削除" Tag="{Binding}" Click="DelButton_Click" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <Label Content="選択ウィンドウ" HorizontalAlignment="Left" Margin="10,24,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="ActiveWindowLabel" Content="Label" HorizontalAlignment="Left" Margin="93,24,0,0" VerticalAlignment="Top" Width="290"/>
-        <Button x:Name="AddAppButton" Content="追加" HorizontalAlignment="Left" Margin="309,233,0,0" VerticalAlignment="Top" Width="59" Click="AddAppButton_Click"/>
-        <Label Content="ウィンドウ名" HorizontalAlignment="Left" Margin="12,187,0,0" VerticalAlignment="Top"/>
-        <Label Content="移動URL" HorizontalAlignment="Left" Margin="12,213,0,0" VerticalAlignment="Top" Width="64"/>
-        <TextBox x:Name="NewWindowTextBox" HorizontalAlignment="Left" Height="26" Margin="93,187,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="199"/>
-        <TextBox x:Name="JumpUrlTexBox" HorizontalAlignment="Left" Height="23" Margin="93,217,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="199"/>
-    </Grid>
+            <Button x:Name="AddAppButton" Content="追加" HorizontalAlignment="Left" Margin="325,197,0,0" VerticalAlignment="Top" Width="59" Click="AddAppButton_Click"/>
+            <Label Content="ウィンドウ名" HorizontalAlignment="Left" Margin="17,165,0,0" VerticalAlignment="Top"/>
+            <Label Content="移動URL" HorizontalAlignment="Left" Margin="17,191,0,0" VerticalAlignment="Top" Width="64"/>
+            <TextBox x:Name="NewWindowTextBox" HorizontalAlignment="Left" Height="26" Margin="86,166,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="199"/>
+            <TextBox x:Name="JumpUrlTexBox" HorizontalAlignment="Left" Height="23" Margin="86,194,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="199"/>
+        </Grid>
+    </Border>
 </Window>

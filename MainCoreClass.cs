@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 
 namespace WebRemokon
 {
-    class MainCoreClass
+    public class MainCoreClass
     {
 
         public my_websocket server;
@@ -55,8 +56,16 @@ namespace WebRemokon
             if (ev is ReceiveEvent)
             {
                 string mes = (ev as ReceiveEvent).mes;
-                Console.WriteLine(mes);
-                SendKeys.SendWait(mes);
+                if (mes.StartsWith("<HEX>") == true)
+                {
+                    string s = Regex.Replace(mes, "<HEX>", "");
+                    VKeyCode.pushKey(s);
+                }
+                else
+                {
+                    Console.WriteLine(mes);
+                    SendKeys.SendWait(mes);
+                }
             }
         }
 
@@ -144,7 +153,7 @@ namespace WebRemokon
 
     }
 
-    class AppData
+    public class AppData
     {
         public string WindowName{get; set;}
         public string url { get; set; }
