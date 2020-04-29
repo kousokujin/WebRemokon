@@ -28,9 +28,16 @@
             <Label Content="Webリモコン" HorizontalAlignment="Left" Margin="10,2,0,206" Width="182" />
                 <DataGrid x:Name="WindowList" AutoGenerateColumns="False" ItemsSource="{Binding MainCore.AppList}" Height="112" Margin="10,36,0,0" VerticalAlignment="Top" Width="381" CanUserAddRows="false" HorizontalAlignment="Left" HeadersVisibility="Column" IsReadOnly="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ウィンドウ名" Binding="{Binding WindowName}" MinWidth="150"/>
+                <DataGridTextColumn Header="ウィンドウ名" Binding="{Binding WindowName}" MinWidth="120"/>
                 <DataGridTextColumn Header="移動URL" Binding="{Binding url}" MinWidth="150"/>
-                <DataGridTemplateColumn Header="削除" MinWidth="40" CanUserResize="False">
+                    <DataGridTemplateColumn Header="編集" MinWidth="40" CanUserResize="False">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button x:Name="EditButton" Content="編集" Tag="{Binding}" Click="EditButton_Click" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="削除" MinWidth="40" CanUserResize="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button x:Name="DelButton" Content="削除" Tag="{Binding}" Click="DelButton_Click" />

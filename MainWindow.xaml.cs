@@ -91,18 +91,6 @@ namespace WebRemokon
         {
             AppData name = ((sender as Button).Tag) as AppData;
 
-            /*
-            int i = 0;
-            int del_i = 0;
-            foreach(AppData d in MainCore.AppList)
-            {
-                if(d.WindowName == name.WindowName && d.url == name.url)
-                {
-                    del_i = i;
-                }
-                i++;
-            }
-            */
             if (name.WindowName != "$default$")
             {
                 MainCore.AppList.Remove(name);
@@ -123,6 +111,20 @@ namespace WebRemokon
         private void Window_Deactivated(object sender, EventArgs e)
         {
             WindowsBorder.BorderBrush = new SolidColorBrush(Color.FromArgb(255, 161,161,161));
+        }
+
+        private void EditButton_Click(object sender, RoutedEventArgs e)
+        {
+            AppData name = ((sender as Button).Tag) as AppData;
+            foreach(AppData d in MainCore.AppList)
+            {
+                if(d.WindowName == name.WindowName)
+                {
+                    NewWindowTextBox.Text = d.WindowName;
+                    JumpUrlTexBox.Text = d.url;
+                    break;
+                }
+            }
         }
 
         /*

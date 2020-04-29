@@ -92,6 +92,8 @@ namespace WebRemokon
         {
             string url = context.Request.RawUrl;
             string path = url.Replace("/", "\\").Remove(0,1);
+            string[] paths = path.Split('?');
+            path = paths[0];
             if (File.Exists(path))
             {
                 byte[] content = File.ReadAllBytes(path);

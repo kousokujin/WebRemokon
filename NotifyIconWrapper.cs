@@ -25,6 +25,8 @@ namespace WebRemokon
             InitializeComponent();
             this.DisplayShow.Click += this.DisPlayButton_Click;
             this.ExitButton.Click += this.ExitButton_Click;
+
+            WindowShow();
         }
 
         public NotifyIconWrapper(IContainer container)
